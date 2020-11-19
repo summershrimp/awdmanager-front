@@ -16,13 +16,13 @@ const shellsRouter = {
       path: 'list',
       component: () => import('@/views/shells/list'),
       name: 'List',
-      meta: { title: 'List', icon: 'list', affix: true }
+      meta: { title: 'List Hosts', icon: 'list', affix: true }
     },
     {
       path: 'batch',
       component: () => import('@/views/shells/batch'),
       name: 'Batch',
-      meta: { title: 'Batch', icon: 'nested', affix: true }
+      meta: { title: 'Batch Command', icon: 'el-icon-aim', affix: true }
     }
   ]
 }

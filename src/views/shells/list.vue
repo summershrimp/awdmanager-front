@@ -55,8 +55,8 @@
       </div>
     </el-dialog>
 
-    <el-dialog width="80vw" :close-on-click-modal="false" :title="'Console for ' + curConsoleId" :visible.sync="consoleVisble">
-      <el-row id="console" style="height: 60vh; overflow-y: scroll; margin-bottom: 1vh; background-color: gainsboro">
+    <el-dialog class="commander" width="80vw" :close-on-click-modal="false" :title="'Console for ' + curConsoleId" :visible.sync="consoleVisble">
+      <el-row id="console" style="height: 60vh; overflow-y: scroll; margin-bottom: 1vh; background-color: gainsboro; padding: 1vh">
         <el-col :span="24">
           <code style="white-space: pre-wrap;">{{ consoleHistory[curConsoleId]| historyExpander }}</code>
         </el-col>
@@ -81,7 +81,11 @@
 
   </div>
 </template>
-
+<style>
+.commander .el-dialog {
+    margin-top: 10vh !important;
+}
+</style>
 <script>
 import { listShells, executeCommand, disconnectShell } from '@/api/shell'
 import waves from '@/directive/waves' // waves directive

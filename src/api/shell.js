@@ -23,3 +23,11 @@ export function disconnectShell(data) {
   })
 }
 
+export function batchCommand(data) {
+  return request({
+    url: '/shell/batch',
+    method: 'post',
+    data
+  })
+}
+
