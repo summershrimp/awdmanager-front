@@ -1,5 +1,14 @@
 <template>
   <div class="app-container">
+    <div class="filter-container">
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="addDialogVisible=true">
+        Add
+      </el-button>
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-download" @click="batchImport">
+        Batch import
+      </el-button>
+    </div>
+
     <el-table
       :key="tableKey"
       v-loading="listLoading"
@@ -27,14 +36,14 @@
       <el-table-column label="Status" class-name="status-col" width="100">
         <template slot-scope="{row}">
           <el-tag :type="row.status | statusFilter">
-            Online
+            {{ row.status || "Online" }}
           </el-tag>
         </template>
       </el-table-column>
       <el-table-column label="Actions" align="center" width="180" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
           <el-button type="primary" size="mini" @click="handleConnect(row.id)">
-            Connect
+            Console
           </el-button>
           <el-button size="mini" type="danger" @click="handleDisconnect(row.id)">
             Disconnect
@@ -79,6 +88,28 @@
       </div>
     </el-dialog>
 
+    <el-dialog title="Add Host" :close-on-click-modal="false" :visible.sync="addDialogVisible">
+      <el-form ref="dataForm" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+        <el-form-item label="Name" prop="title">
+          <el-input v-model="temp.name" />
+        </el-form-item>
+        <el-form-item label="Host" prop="title">
+          <el-input v-model="temp.host" />
+        </el-form-item>
+        <el-form-item label="Port" prop="title">
+          <el-input v-model="temp.port" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="addDialogVisible = false">
+          Cancel
+        </el-button>
+        <el-button type="primary" @click="addHost()">
+          Confirm
+        </el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 <style>
@@ -87,7 +118,7 @@
 }
 </style>
 <script>
-import { listShells, executeCommand, disconnectShell } from '@/api/shell'
+import { listShells, executeCommand, disconnectShell, addHost } from '@/api/shell'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 
@@ -98,9 +129,9 @@ export default {
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: 'success',
-        draft: 'info',
-        deleted: 'danger'
+        online: 'success',
+        unknown: 'info',
+        offline: 'danger'
       }
       return statusMap[status]
     },
@@ -126,7 +157,13 @@ export default {
       consoleVisble: false,
       curConsoleId: '',
       consoleHistory: {},
-      cmdline: ''
+      cmdline: '',
+      addDialogVisible: false,
+      temp: {
+        name: '',
+        host: '',
+        port: 0
+      }
     }
   },
   mounted() {
@@ -189,6 +226,15 @@ export default {
           return v[j]
         }
       }))
+    },
+    batchImport() {
+
+    },
+    addHost() {
+      this.temp.port = parseInt(this.temp.port)
+      addHost(this.temp).then(() => {
+        this.addDialogVisible = false
+      })
     }
   }
 }

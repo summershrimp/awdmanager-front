@@ -31,3 +31,11 @@ export function batchCommand(data) {
   })
 }
 
+export function addHost(data) {
+  return request({
+    url: '/shell/add',
+    method: 'post',
+    data
+  })
+}
+
