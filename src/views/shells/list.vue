@@ -149,7 +149,7 @@ export default {
       tableKey: 0,
       list: null,
       total: 0,
-      timer: 0,
+      timer: null,
       listLoading: true,
       statusOptions: ['published', 'draft', 'deleted'],
       dialogVisible: false,
@@ -162,7 +162,7 @@ export default {
       temp: {
         name: '',
         host: '',
-        port: 0
+        port: undefined
       }
     }
   },
